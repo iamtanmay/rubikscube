@@ -1,79 +1,66 @@
 <!DOCTYPE html>
 <html>
-
-  <head>
-    <meta charset='utf-8' />
-    <meta http-equiv="X-UA-Compatible" content="chrome=1" />
-    <meta name="description" content="Rubikscube : Rubik&#39;s Cube" />
-
-    <link rel="stylesheet" type="text/css" media="screen" href="stylesheets/stylesheet.css">
-
-    <title>Rubikscube</title>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="styles/cube.css">
+    <link rel="stylesheet" type="text/css" href="styles/doodle.css">
+    <link rel="stylesheet" type="text/css" href="styles/certificate.css">
+    <!-- Script font -->
+    <link href="http://fonts.googleapis.com/css?family=Rubik+One&amp;subset=all" rel="stylesheet" type="text/css">
+    <!-- compiled & minified cube code -->
+    <script charset="utf-8" src="scripts/tween.js"></script>
+    <script charset="utf-8" src="scripts/Three.noStrict.js"></script>
+    <script charset="utf-8" src="scripts/cuber.min.js"></script>
   </head>
-
   <body>
-
-    <!-- HEADER -->
-    <div id="header_wrap" class="outer">
-        <header class="inner">
-          <a id="forkme_banner" href="https://github.com/iamtanmay/rubikscube">View on GitHub</a>
-
-          <h1 id="project_title">Rubikscube</h1>
-          <h2 id="project_tagline">Rubik&#39;s Cube</h2>
-
-            <section id="downloads">
-              <a class="zip_download_link" href="https://github.com/iamtanmay/rubikscube/zipball/master">Download this project as a .zip file</a>
-              <a class="tar_download_link" href="https://github.com/iamtanmay/rubikscube/tarball/master">Download this project as a tar.gz file</a>
-            </section>
-        </header>
+    <div id="bg"></div>
+    <div id="container"></div>
+    <div id="fail">
+      <img src="media/static-cube.png"/>
+      <div id="upgradeText" class="bubble fadeTransition">
+        <div class="upgradetext">To play, please use the latest version of one of the following browsers</div>
+        <br><br>
+        <a class="upgradetext" href="https://www.google.com/chrome/browser/" target="_blank">Chrome</a><br>
+        <a class="upgradetext" href="https://www.mozilla.org/firefox" target="_blank">Firefox</a><br>
+        <a class="upgradetext" href="https://www.apple.com/safari" target="_blank">Safari</a><br>
+        <span class="pointerleft SPRITE_carrot_down_2x"></span>
+      </div>
     </div>
-
-    <!-- MAIN CONTENT -->
-    <div id="main_content_wrap" class="outer">
-      <section id="main_content" class="inner">
-        <h3>
-<a name="welcome-to-github-pages" class="anchor" href="#welcome-to-github-pages"><span class="octicon octicon-link"></span></a>Welcome to GitHub Pages.</h3>
-
-<p>This automatic page generator is the easiest way to create beautiful pages for all of your projects. Author your page content here using GitHub Flavored Markdown, select a template crafted by a designer, and publish. After your page is generated, you can check out the new branch:</p>
-
-<pre><code>$ cd your_repo_root/repo_name
-$ git fetch origin
-$ git checkout gh-pages
-</code></pre>
-
-<p>If you're using the GitHub for Mac, simply sync your repository and you'll see the new branch.</p>
-
-<h3>
-<a name="designer-templates" class="anchor" href="#designer-templates"><span class="octicon octicon-link"></span></a>Designer Templates</h3>
-
-<p>We've crafted some handsome templates for you to use. Go ahead and continue to layouts to browse through them. You can easily go back to edit your page before publishing. After publishing your page, you can revisit the page generator and switch to another theme. Your Page content will be preserved if it remained markdown format.</p>
-
-<h3>
-<a name="rather-drive-stick" class="anchor" href="#rather-drive-stick"><span class="octicon octicon-link"></span></a>Rather Drive Stick?</h3>
-
-<p>If you prefer to not use the automatic generator, push a branch named <code>gh-pages</code> to your repository to create a page manually. In addition to supporting regular HTML content, GitHub Pages support Jekyll, a simple, blog aware static site generator written by our own Tom Preston-Werner. Jekyll makes it easy to create site-wide headers and footers without having to copy them across every page. It also offers intelligent blog support and other advanced templating features.</p>
-
-<h3>
-<a name="authors-and-contributors" class="anchor" href="#authors-and-contributors"><span class="octicon octicon-link"></span></a>Authors and Contributors</h3>
-
-<p>You can <a href="https://github.com/blog/821" class="user-mention">@mention</a> a GitHub username to generate a link to their profile. The resulting <code>&lt;a&gt;</code> element will link to the contributor's GitHub Profile. For example: In 2007, Chris Wanstrath (<a href="https://github.com/defunkt" class="user-mention">@defunkt</a>), PJ Hyett (<a href="https://github.com/pjhyett" class="user-mention">@pjhyett</a>), and Tom Preston-Werner (<a href="https://github.com/mojombo" class="user-mention">@mojombo</a>) founded GitHub.</p>
-
-<h3>
-<a name="support-or-contact" class="anchor" href="#support-or-contact"><span class="octicon octicon-link"></span></a>Support or Contact</h3>
-
-<p>Having trouble with Pages? Check out the documentation at <a href="http://help.github.com/pages">http://help.github.com/pages</a> or contact <a href="mailto:support@github.com">support@github.com</a> and we’ll help you sort it out.</p>
-      </section>
+    <div id="uipanel" class="fadeTransition">
+      <div id="movecounter">0</div>
+      <div id="buttonpanel">
+        <div id="sharebubble" class="fadeTransition" style="opacity:0">
+          <input id="shareshortlink" type="text" value="google.com/doodles" readonly="readonly"/>
+          <div id="sharegplus" class="bubbleicon SPRITE_google_plus_64_2x"></div>
+          <div id="sharefacebook" class="bubbleicon SPRITE_facebook_64_2x"></div>
+          <div id="sharetwitter" class="bubbleicon SPRITE_twitter_64_2x"></div>
+          <div id="shareemail" class="bubbleicon SPRITE_email_64_2x"></div>
+        </div>
+        <div id="uibuttons">
+          <div id="sharebutton" class="bubbleicon SPRITE_share_64_2x"></div>
+          <div id="helpbutton" class="bubbleicon SPRITE_help_64_2x"></div>
+          <div id="searchbutton" class="bubbleicon SPRITE_search_64_2x"></div>
+        </div>
+      </div>
+      <div id="helpbubble" class="bubble" style="display:none">
+        <span class="pointerup SPRITE_carrot_grey_up_2x"></span>
+        <div id="helpimage" class="one"></div>
+        <div id="helptext" class="helptext"></div>
+        <div id="helpnext" class="helptext"></div>
+        <span class="pointerdown SPRITE_carrot_down_2x"></span><br>
+      </div>
     </div>
-
-    <!-- FOOTER  -->
-    <div id="footer_wrap" class="outer">
-      <footer class="inner">
-        <p class="copyright">Rubikscube maintained by <a href="https://github.com/iamtanmay">iamtanmay</a></p>
-        <p>Published with <a href="http://pages.github.com">GitHub Pages</a></p>
-      </footer>
-    </div>
-
-    
-
+    <script charset="utf-8" src="scripts/iecss3d.js"></script>
+    <script charset="utf-8" src="scripts/ierenderer.js"></script>
+    <script charset="utf-8" src="scripts/deviceMotion.js"></script>
+    <script charset="utf-8" src="scripts/locked.js"></script>
+    <!-- Certificate js -->
+    <script charset="utf-8" src="scripts/textBox.js"></script>
+    <script charset="utf-8" src="scripts/ResizeableTextBox.js"></script>
+    <script charset="utf-8" src="scripts/divBox.js"></script>
+    <script charset="utf-8" src="scripts/frames.js"></script>
+    <script charset="utf-8" src="scripts/certificate.js"></script>
+    <script charset="utf-8" src="scripts/main.js"></script>
   </body>
 </html>
